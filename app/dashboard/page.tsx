@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/app/utils/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { BlogpostCard } from "@/components/general/BlogpostCard";
+import { redirect } from "next/navigation";
 
 async function getData(userId: string) {
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -23,7 +24,12 @@ export default async function DashboardRoute() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
+  if (!user) {
+    return redirect("/api/auth/login");
+  }
+
   const data = await getData(user.id);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -34,7 +40,7 @@ export default async function DashboardRoute() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.map((item) => (
-            <BlogpostCard data={item} key={item.id} />
+          <BlogpostCard data={item} key={item.id} />
         ))}
       </div>
     </div>
