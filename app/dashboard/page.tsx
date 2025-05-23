@@ -3,7 +3,6 @@ import Link from "next/link";
 import { prisma } from "@/app/utils/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { BlogpostCard } from "@/components/general/BlogpostCard";
-import { redirect } from "next/navigation";
 
 async function getData(userId: string) {
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -24,11 +23,7 @@ export default async function DashboardRoute() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  if (!user) {
-    return redirect("/api/auth/login");
-  }
-
-  const data = await getData(user.id);
+  const data = await getData(user?.id);
 
   return (
     <div>
