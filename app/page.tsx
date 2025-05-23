@@ -3,6 +3,8 @@ import { prisma } from "./utils/db";
 import { Suspense } from "react";
 import { BlogPostsSkeleton } from "@/components/general/BlogPostsSkeleton";
 
+export const revalidate = 60; 
+
 async function getData() {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
